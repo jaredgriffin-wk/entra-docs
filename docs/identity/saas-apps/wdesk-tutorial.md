@@ -2,7 +2,7 @@
 title: Configure Workiva for Single sign-on with Microsoft Entra ID
 description: Learn how to configure single sign-on between Microsoft Entra ID and Workiva.
 ms.topic: how-to
-ms.date: 08/28/2026
+ms.date: 10/23/2026
 ms.custom: sfi-image-nochange
 # Customer intent: As an IT administrator, I want to learn how to configure single sign-on between Microsoft Entra ID and Workiva so that I can control who has access to Workiva, enable automatic sign-in with Microsoft Entra accounts, and manage my accounts in one central location.
 --- 
@@ -10,33 +10,30 @@ ms.custom: sfi-image-nochange
 
 This article will walk a Workiva Org Security Admin through how to configure Single Sign-On with Azure Entra ID. Workiva has created an entirely self-service portal for configuring SSO. Workiva suggests designating a member of the IAM/IT team to do the configuration as well as make sure the authentication settings are complying with your company requirements.
 
-This is accomplished through a Workiva role called **Organization Security Admin** which gives no content access, just admin access to the security tab which contains authentication and SSO settings. 
+This is accomplished through a Workiva role called **Organization Security Admin** which gives no content access, just admin access to the authentication tab which contains SSO configuration settings. 
 > [!Caution]
 > The Organization Security Admin will need to be added to a Workspace in order to access the Organization level
 
 * Control in Microsoft Entra ID who has access to Workiva.
 * Enable your users to be automatically signed-in to Workiva with their Microsoft Entra accounts.
-* Manage your accounts in one central location.
 
 ## Prerequisites
 The scenario outlined in this article assumes that you already have the following prerequisites:
 [!INCLUDE [common-prerequisites.md](~/identity/saas-apps/includes/common-prerequisites.md)]
 
-## Scenario description
+## Supported Features
 
-In this article,  you configure and test Microsoft Entra single sign-on in a test environment.
-
-* Workiva supports **SAML 2.0**.
-* Workiva supports **SP** and **IDP** initiated SSO.
-* Workiva can leverage **hybrid authentication** for easier integration.
-* Workiva contains an **SSO Exception List** for external third party users.
-* Workiva supports **Dual SSO Signing Certificates** for a smooth transition.
+* Workiva supports **SAML 2.0** with a static SP URL
+* Workiva supports **SP** and **IdP** initiated SSO
+* Workiva can leverage **hybrid authentication** for easier integration
+* Workiva contains an **SSO Exception List** for external third party users
+* Workiva supports **Dual SSO Signing Certificates** for a smooth transition
 
 ## Create Workiva SSO Configuration
 
 To access the Authentication Panel where the SSO configuration can be found, an assigned **Organization Security Admin** will need to: 
 
-Log in **Workiva** > **Person Icon** > **Admin** > **Organization Admin**.
+Log into **Workiva** > **Person Icon** > **Admin** > **Organization Admin**.
 
 ![How Org Admin Login](./wdesk-tutorial/settings.png)
 
@@ -48,11 +45,11 @@ Once the new browser tab loads, browse to:
 
 To create an SSO configuration the assigned Org Security Admin will need to: 
 
-**Name** this specific SSO configuration > select Azure as the **Identity Provider (IdP)**
+**Name** this specific SSO configuration and **select** Azure as the **Identity Provider (IdP)**
 	
 ![Workiva SSO Config Info](./wdesk-tutorial/configurationname.png)
 
-Then **Step 1 Workiva Metadata** will appear. The Org Security Admin will be able to obtain the **Identifier (Entity ID)** and **Reply URL (Assertion Consumer Service URL)** endpoints. There is also an option to download the actual Workiva .XML Metadata file for the Azure import option.
+Then **Step 1 Workiva Metadata** will appear. The Org Security Admin will be able to obtain the **Identifier (Entity ID)** and **Reply URL (Assertion Consumer Service URL)** endpoints. There is also an option to download the actual Workiva .XML Metadata file which already contains the SSO endpoints. This information will need to be shared with your Azure Entra ID team.
 
 ![Workiva Metadata Entpoints](./wdesk-tutorial/workivametadata.png)
 
@@ -142,11 +139,11 @@ Once the Workiva Org Security Admin has the Azure Entra ID Metadata, they can ac
 
 Workiva recommends selecting **Map user to their Workiva username** to set all the SSO IDs to match the Workiva usernames if possible. This allows Workiva to expect the incoming Unique User Identifier / Primary NameID attribute to match the Workiva username, ignoring any case sensitivity, when the user logs in and no extra Admin work is needed. However, if this is not an option then the SSO IDs can be manually mapped to the Workiva username before the user can access with SSO.
 
-In the User Mapping section, click the Set **Mapping dropdown**, and select either:
+In the User Mapping section, set the **Mapping dropdown**, and select either:
 * **Map users to their Workiva username**
-	* Will configure Workiva to expect the incoming SSO ID will match the current Workiva username and auto-map the attribute when a user logs in
+	* Will configure Workiva to expect the incoming SSO ID will match the current Workiva username and auto-map the attribute when a user logs in.
 * **Map users manually**
-	* Will configure Workiva to expect the Org Security Admin to manually map the SSO ID to the corresponding username before they can access with SSO
+	* Will configure Workiva to expect the Org Security Admin to manually map the SSO ID to the corresponding username before they can access with SSO.
 
 ![Workiva User Mapping Settings](./wdesk-tutorial/workivausermapping.png)
 
@@ -221,14 +218,14 @@ You can require users to sign in the Workiva application using SSO. If certain u
 > [!Caution]
 > Please make sure bypass users are on the SSO Exception List before requiring SSO on the account to avoid user lockout
 
-**Force users to sign in using SSO**
-Check this on will force users to access with SSO except Org Security Admin (break glass) and anyone listed on the SSO Exception List. 
+* **Force users to sign in using SSO**
+	* Check this on to force users to access with SSO except Org Security Admin (break glass) and anyone listed on the SSO Exception List. 
 
 
 ![Workiva First Requirement Setting](./wdesk-tutorial/requiresso.png)
 
-**Force Org Security Admins to sign in using SSO**
-This will Force Org Security Admins to sign in using SSO as well.
+* **Force Org Security Admins to sign in using SSO**
+	* Check this on to also force Org Security Admins to sign in using SSO as well and can no longer bypass the SSO requirement.
 
 ![Workiva Admin Requirement Setting](./wdesk-tutorial/ssorequireadmins.png)
 
